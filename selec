@@ -1,0 +1,28 @@
+#include<stdio.h>
+int main()
+{
+int arr[5],i,j,min,e,z;
+printf("Enter Numbers  :");
+for(i=0;i<5;i++)
+scanf("%d",&arr[i]);
+for(i=0;i<5;i++)
+{   
+    min=arr[i];
+    e=i;
+    for(j=i+1;j<5;j++)
+    {
+        if(arr[j]<min)
+        {
+            min=arr[j];
+            e=j;
+        }
+
+    }
+    z=arr[i];
+    arr[i]=arr[e];
+    arr[e]=z;
+}
+for(j=0;j<5;j++)
+printf("%d\n",arr[j]);
+return 0;
+}
