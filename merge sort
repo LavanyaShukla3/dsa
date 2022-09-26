@@ -1,55 +1,71 @@
 #include <stdio.h>
 
-#define max 10
+void merge(int arr[], int p, int q, int r) {
 
-int a[11] = { 10, 14, 19, 26, 27, 31, 33, 35, 42, 44, 0 };
-int b[10];
+  
+  int n1 = q - p + 1;
+  int n2 = r - q;
 
-void merging(int low, int mid, int high) {
-   int l1, l2, i;
+  int L[n1], M[n2];
 
-   for(l1 = low, l2 = mid + 1, i = low; l1 <= mid && l2 <= high; i++) {
-      if(a[l1] <= a[l2])
-         b[i] = a[l1++];
-      else
-         b[i] = a[l2++];
-   }
-   
-   while(l1 <= mid)    
-      b[i++] = a[l1++];
+  for (int i = 0; i < n1; i++)
+    L[i] = arr[p + i];
+  for (int j = 0; j < n2; j++)
+    M[j] = arr[q + 1 + j];
 
-   while(l2 <= high)   
-      b[i++] = a[l2++];
+  int i, j, k;
+  i = 0;
+  j = 0;
+  k = p;
 
-   for(i = low; i <= high; i++)
-      a[i] = b[i];
+  while (i < n1 && j < n2) {
+    if (L[i] <= M[j]) {
+      arr[k] = L[i];
+      i++;
+    } else {
+      arr[k] = M[j];
+      j++;
+    }
+    k++;
+  }
+
+  while (i < n1) {
+    arr[k] = L[i];
+    i++;
+    k++;
+  }
+
+  while (j < n2) {
+    arr[k] = M[j];
+    j++;
+    k++;
+  }
 }
 
-void sort(int low, int high) {
-   int mid;
-   
-   if(low < high) {
-      mid = (low + high) / 2;
-      sort(low, mid);
-      sort(mid+1, high);
-      merging(low, mid, high);
-   } else { 
-      return;
-   }   
+void mergeSort(int arr[], int l, int r) {
+  if (l < r) {
+
+    int m = l + (r - l) / 2;
+
+    mergeSort(arr, l, m);
+    mergeSort(arr, m + 1, r);
+
+    merge(arr, l, m, r);
+  }
 }
 
-int main() { 
-   int i;
+void printArray(int arr[], int size) {
+  for (int i = 0; i < size; i++)
+    printf("%d ", arr[i]);
+  printf("\n");
+}
 
-   printf("List before sorting\n");
-   
-   for(i = 0; i <= max; i++)
-      printf("%d ", a[i]);
+int main() {
+  int arr[] = {6, 5, 12, 10, 9, 1};
+  int size = sizeof(arr) / sizeof(arr[0]);
 
-   sort(0, max);
+  mergeSort(arr, 0, size - 1);
 
-   printf("\nList after sorting\n");
-   
-   for(i = 0; i <= max; i++)
-      printf("%d ", a[i]);
+  printf("Sorted array: \n");
+  printArray(arr, size);
 }
